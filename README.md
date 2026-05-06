@@ -1,4 +1,4 @@
-# Proto-LoRA: Prototype-based LoRA Fine-tuning for Multimodal Information Extraction
+# Proto-LoRA: Prototype-Enhanced Low-Rank Adaptation for Zero-Shot Multimodal Information Extraction
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
