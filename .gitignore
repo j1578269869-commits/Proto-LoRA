@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+*.pyo
+*.pdb
+*.egg*
+*.whl
+build/
+dist/
+.eggs/
+.python-version
+
+# Virtualenv
+venv/
+.env/
+.envrc
+.env.*
+
+# Jupyter
+.ipynb_checkpoints
+
+# Logs and checkpoints
+logs/
+*.log
+*.json
+checkpoint/
+checkpoints/
+outputs/
+*.ckpt
+*.pth
+
+# Dataset and model caches
+data/
+**/data/
+*.pt
+*.bin
+*.safetensors
+
+# System files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Huggingface cache
+~/.cache/huggingface
+~/.cache/torch
+alre.tar.gz

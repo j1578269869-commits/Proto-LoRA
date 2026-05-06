@@ -1,0 +1,82 @@
+accelerate==1.4.0
+antlr4-python3-runtime==4.9.3
+bitsandbytes==0.45.5
+blobfile==3.0.0
+Brotli @ file:///croot/brotli-split_1714483155106/work
+certifi @ file:///croot/certifi_1725551672989/work/certifi
+charset-normalizer @ file:///croot/charset-normalizer_1721748349566/work
+click @ file:///croot/click_1698129812380/work
+exceptiongroup==1.2.2
+filelock @ file:///croot/filelock_1700591183607/work
+fsspec==2024.10.0
+fuzzywuzzy==0.18.0
+huggingface-hub==0.31.4
+idna==3.10
+iniconfig==2.0.0
+iopath==0.1.10
+Jinja2==3.1.4
+joblib @ file:///croot/joblib_1718217211762/work
+Levenshtein==0.27.1
+lxml==5.3.1
+MarkupSafe==3.0.2
+mkl-service==2.4.0
+mkl_fft @ file:///io/mkl313/mkl_fft_1730824109137/work
+mkl_random @ file:///io/mkl313/mkl_random_1730823916628/work
+mpmath==1.3.0
+networkx==3.2.1
+nltk==3.9.1
+numpy @ file:///croot/numpy_and_numpy_base_1725470312869/work/dist/numpy-2.0.1-cp39-cp39-linux_x86_64.whl#sha256=d86a49760b169e0c4fb8c00d248077a0474f640071b7ef584afd5ad4f03b9428
+nvidia-cublas-cu12==12.4.5.8
+nvidia-cuda-cupti-cu12==12.4.127
+nvidia-cuda-nvrtc-cu12==12.4.127
+nvidia-cuda-runtime-cu12==12.4.127
+nvidia-cudnn-cu12==9.1.0.70
+nvidia-cufft-cu12==11.2.1.3
+nvidia-curand-cu12==10.3.5.147
+nvidia-cusolver-cu12==11.6.1.9
+nvidia-cusparse-cu12==12.3.1.170
+nvidia-nccl-cu12==2.21.5
+nvidia-nvjitlink-cu12==12.4.127
+nvidia-nvtx-cu12==12.4.127
+omegaconf==2.3.0
+packaging @ file:///croot/packaging_1720101850331/work
+pandas==2.3.2
+peft==0.3.0
+pillow==11.0.0
+pluggy==1.5.0
+portalocker==3.2.0
+protobuf==4.25.3
+psutil==7.0.0
+pycryptodomex==3.21.0
+PySocks @ file:///tmp/build/80754af9/pysocks_1605305812635/work
+pytest==8.3.4
+python-dateutil==2.9.0.post0
+python-Levenshtein==0.27.1
+pytz==2025.2
+PyYAML @ file:///croot/pyyaml_1728657952215/work
+pyzmq==26.4.0
+RapidFuzz==3.13.0
+regex==2024.11.6
+requests @ file:///croot/requests_1730999120400/work
+sacremoses==0.0.43
+safetensors==0.4.5
+scikit-learn==1.6.0
+scipy==1.13.1
+sentence-transformers==3.4.1
+sentencepiece==0.2.0
+six @ file:///tmp/build/80754af9/six_1644875935023/work
+sympy==1.13.1
+termcolor==3.0.1
+threadpoolctl==3.5.0
+tiktoken==0.9.0
+tokenizers==0.21.0
+tomli==2.2.1
+torch==2.5.1
+torchvision==0.20.1
+tqdm @ file:///croot/tqdm_1724853939799/work
+transformers==4.49.0
+triton==3.1.0
+typing_extensions @ file:///croot/typing_extensions_1715268824938/work
+tzdata==2025.2
+urllib3 @ file:///croot/urllib3_1727769808118/work
+zmq==0.0.0

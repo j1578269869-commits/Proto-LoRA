@@ -1,0 +1,15 @@
+seed: 97
+mode: train_eval
+model_name: /path/to/llava-1.5-7b-hf
+prototype_path: data/MRE/embeddings_similarity.pt
+train_path: data/MRE/mnre_llava_train.json
+val_path: data/MRE/mnre_llava_val.json
+test_path: data/MRE/mnre_llava_test.json
+image_base_path: data/MRE/image
+save_dir: outputs/mre/llava
+epochs: 3
+batch_size: 1
+lr: 1e-4
+train_max_samples: 0
+val_max_samples: 0
+test_max_samples: 0

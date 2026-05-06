@@ -1,0 +1,15 @@
+seed: 97
+mode: train_eval
+model_path: /path/to/Qwen2-VL-7B
+prototype_path: data/MET/entity_embedding_idx_Qwen2.pt
+train_path: data/MET/train.json
+val_path: data/MET/valid.json
+test_path: data/MET/test.json
+image_dir: data/MET/wikinewsImgs
+output_dir: outputs/met/qwen
+epochs: 3
+batch_size: 1
+lr: 2e-5
+train_max_samples: 0
+val_max_samples: 0
+test_max_samples: 0
