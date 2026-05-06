@@ -1,134 +1,175 @@
-# Proto-LoRA
+# Proto-LoRA: Prototype-based LoRA Fine-tuning for Multimodal Relation Extraction
 
-本项目包含用于多模态关系抽取（MRE）和实体对齐/关系抽取任务的 LoRA 微调代码。项目整合了 BLIP2、LLaVA、Qwen2-VL 等模型，并提供训练、验证、测试流程。
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> 备注：本仓库已改为配置驱动运行，建议使用 `config/*.yaml` 统一管理路径和超参。
+## Abstract
 
-## 目录结构
+Proto-LoRA is an implementation framework for efficient multimodal relation extraction and entity typing using Low-Rank Adaptation (LoRA) in large multimodal models. It emphasizes prototype-based semantic guidance for entity and relation embeddings, while preserving the lightweight tuning characteristics of LoRA.
 
-- `config/`：配置文件目录，支持 `*.yaml` 或 `*.json` 参数化运行
-- `data/`：数据准备说明
-- `scripts/`：常用运行脚本和下载说明
-- `requirements.txt`：Python 依赖列表
-- `trainlora_blip2_MET.py`：BLIP2 + MET 训练/验证/测试代码
-- `trainlora_llava_MET.py`：LLaVA + MET 训练/验证/测试代码
-- `trainlora_Qwen_MET.py`：Qwen2-VL + MET 训练/验证/测试代码
-- `trainlora_blip2_MRE.py`：BLIP2 + MRE 训练/验证/测试代码
-- `trainlora_llava_MRE.py`：LLaVA + MRE 训练/验证/测试代码
-- `trainlora_Qwen2_MRE.py`：Qwen2-VL + MRE 训练/验证/测试代码
-- `run_MET.sh`：兼容配置驱动的 MET 运行脚本
-- `run_MRE.sh`：兼容配置驱动的 MRE 运行脚本
+This repository is intended as a reproducible codebase, with a focus on configuration-driven execution, model modularity, and clear experiment workflow.
 
-## 运行环境
+## Introduction
 
-建议使用 GPU 环境，并安装如下依赖：
+Modern multimodal relation extraction systems must integrate visual and textual context while remaining practical for large pre-trained multimodal models. Proto-LoRA addresses this challenge by:
+
+- using prototype embeddings to represent entity and relation semantics,
+- applying LoRA to reduce trainable parameter counts,
+- supporting multiple backbone models including BLIP2, LLaVA, and Qwen2-VL.
+
+The implementation supports two primary tasks:
+
+1. **Multimodal Entity Typing (MET)**
+2. **Multimodal Relation Extraction (MRE)**
+
+## Design Principles
+
+- **Reproducibility**: all experiments are driven by configuration files in `config/`.
+- **Modularity**: model-specific training logic is separated into dedicated scripts.
+- **Transparency**: no experimental numbers are presented unless derived from validated runs.
+- **Open-source readiness**: environment setup and data dependencies are documented.
+
+## Installation
+
+### Requirements
+
+- Python 3.8 or later
+- CUDA 11.x / 12.x compatible GPU
+- `pip`
+
+### Setup
 
 ```bash
+git clone https://github.com/j1578269869-commits/Proto-LoRA.git
+cd Proto-LoRA
 pip install -r requirements.txt
 ```
 
-如果需要隔离环境，可以使用 `conda` 或 `venv`：
+### Hugging Face Authentication
+
+If model weights or datasets are hosted on Hugging Face, export your token:
 
 ```bash
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+export HF_TOKEN="your_huggingface_token_here"
 ```
 
-## 使用说明
+## Repository Layout
 
-### 1. 修改配置
+- `config/` — experiment configuration templates
+- `data/` — data preparation and format instructions
+- `scripts/` — helper scripts for launching experiments and downloads
+- `embedding_entity/` — entity prototype embedding utilities
+- `embedding_relation/` — relation prototype embedding utilities
+- `LoRA/` — LoRA adaptation components and helper modules
+- `Zero-shot/` — zero-shot evaluation utilities
+- `trainlora_*.py` — training scripts for each model/task
+- `run_MET.sh`, `run_MRE.sh` — execution wrappers
+- `requirements.txt` — dependency list
+- `README.md` — repository documentation
 
-建议先编辑 `config/*.yaml`，统一管理模型、数据和输出路径，避免直接修改脚本内的路径。
+## Configuration
 
-你也可以使用 `scripts/download_data.sh` 创建目录结构并查看数据准备说明。
+Proto-LoRA uses YAML configuration files. A configuration file should specify at least:
 
-常用配置项：
-
-- `model_path` / `model_name`
+- `model_path` or `model_name`
 - `prototype_path`
-- `train_path`
-- `val_path`
-- `test_path`
-- `image_dir` / `image_base_path`
-- `output_dir` / `save_dir`
+- `train_path`, `val_path`, `test_path`
+- `image_base_path`
+- `save_dir`
+- training hyperparameters (`epochs`, `batch_size`, `lr`, etc.)
 
-### 2. 运行单个实验
+Example configuration for MRE:
 
-建议使用配置文件运行：
+```yaml
+model_path: "/path/to/blip2-flan-t5-xxl"
+prototype_path: "/path/to/extract_relation_embedding_blip.pt"
+train_path: "/path/to/mnre_train.json"
+val_path: "/path/to/mnre_val.json"
+test_path: "/path/to/mnre_test.json"
+image_base_path: "/path/to/images"
+save_dir: "./outputs/mre_blip2"
+epochs: 3
+batch_size: 1
+lr: 1e-4
+```
+
+## Running Experiments
+
+### Launch from shell scripts
+
+The repository provides wrapper scripts for convenience:
 
 ```bash
 bash run_MRE.sh
 bash run_MET.sh
 ```
 
-如果只想执行某一个脚本，可直接运行：
+These scripts should be configured to point to the desired YAML file before execution.
+
+### Run a specific model/task
 
 ```bash
+python trainlora_blip2_MRE.py --config config/mre_blip2.yaml
+python trainlora_llava_MET.py --config config/met_llava.yaml
 python trainlora_Qwen2_MRE.py --config config/mre_qwen.yaml
 ```
 
-或者覆盖配置参数：
+### Command-line overrides
 
-```bash
-python trainlora_Qwen2_MRE.py \
-  --model_name /path/to/Qwen2-VL-7B \
-  --prototype_path /path/to/similarity_embedding_Qwen2.pt \
-  --train_path /path/to/mnre_llava_train.json \
-  --val_path /path/to/mnre_llava_val.json \
-  --test_path /path/to/mnre_llava_test.json \
-  --image_base_path /path/to/image \
-  --save_dir ./outputs/qwen2_mre \
-  --epochs 3 \
-  --batch_size 1 \
-  --lr 2e-5
-```
+Most scripts support overriding configuration fields through CLI arguments. Use this to run quick ablations without editing YAML files.
 
-### 3. 输出结果
+## Evaluation and Output
 
-训练时会保存：
+During training, the code produces:
 
-- `best_adapter/`：最佳 LoRA 适配器权重
-- `latest_adapter/`：最新一轮 LoRA 适配器权重
-- `train_history.json`：训练历史与验证结果
-- `test_results.json`：最终测试结果
-- `test_results_epoch_X.json`：每轮测试结果
-- `run_config.json`：本次运行配置
+- saved adapter weights in `save_dir`
+- JSON-based logs for training history
+- validation and test predictions
+- evaluation metrics computed on the current dataset
 
-## 重要说明
+The exact output filenames and structure are determined by the training script and the configuration.
 
-- 本项目当前依赖本地数据和模型目录，请在公开仓库中补充数据下载脚本或 Dataset 说明。
-- 论文开源仓库应避免硬编码绝对路径，建议统一改成命令行参数或配置文件。
-- 如果要公开发布，建议补充 `LICENSE` 文件，并在 README 中说明引用/使用协议。
+## Notes on Experimental Results
 
-1. **README 完整性**
-   - 任务描述、模型架构、实验设置、数据来源、复现实验步骤
-   - 依赖安装、环境配置、GPU/CPU 要求
-   - 目录结构说明与关键脚本说明
+This README does not include unverified performance figures. For publication-quality documentation, populate this section with metrics obtained from reproducible runs and documented evaluation protocols.
 
-2. **可复现性**
-   - 添加完整的训练/评估复现命令
-   - 提供实验配置文件或 `config/*.json` 形式配置
-   - 提供数据预处理脚本和数据格式说明
-   - 提供 `run_MET.sh` / `run_MRE.sh` 的示例命令
+When adding results, include:
 
-3. **代码质量**
-   - 删除本地绝对路径，改成参数或配置
-   - 加注释和 docstring，特别是数据加载、指标计算、保存逻辑
-   - 把重复逻辑抽成通用模块（例如 `dataset.py`、`utils.py`）
+- task description and dataset split details
+- evaluation metrics (precision, recall, F1, accuracy)
+- comparison to baseline methods
+- any ablation or probe study settings
 
-4. **实验结果与可视化**
-   - 增加模型性能结果表、对比 Baseline、消融实验
-   - 保存 `results/` 示例输出，以及准确率/F1 等指标
+## Data Preparation
 
-5. **附加文件**
-   - `LICENSE`（例如 MIT / Apache 2.0）
-   - `CONTRIBUTING.md`（可选）
-   - `.gitignore`
-   - `requirements.txt` / `environment.yml`
-   - `CITATION.cff`（可选）
+Ensure your dataset files match the format expected by the scripts.
 
-## 版本说明
+- `train_path`, `val_path`, `test_path` should be valid JSON files.
+- `image_base_path` should point to the root folder containing image assets.
+- prototype embedding files should be generated through the provided embedding utilities.
 
-- 当前仓库页面以 `Proto-LoRA` 为主目录，本次补充了 `README.md` 和 `.gitignore`。
-- 你还可以继续补充 `config/`、`scripts/`、`data/` 下载说明，以及更清晰的 `utils/` 模块划分。
+If you use third-party datasets, cite the source and describe any preprocessing steps.
+
+## Best Practices for Publication
+
+1. Keep all dataset and model paths outside the codebase.
+2. Use configuration files for hyperparameters and paths.
+3. Document the hardware used for experiments.
+4. Report average results over multiple random seeds if possible.
+5. Include the exact command used for each key result.
+
+## Contribution Guidelines
+
+Contributions are welcome. A high-quality contribution should include:
+
+- a clear description of the change
+- reproducible commands or config examples
+- code that avoids hard-coded paths
+- documentation updates when behavior changes
+
+## Citation
+
+If Proto-LoRA is used in your research, please cite the repository and describe the method in your own paper.
+
+## License
+
+This project is distributed under the MIT License. See `LICENSE` for details.
